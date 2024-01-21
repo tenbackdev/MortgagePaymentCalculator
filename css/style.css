@@ -1,0 +1,73 @@
+/** {
+    border: 1px solid red;
+}
+*/
+
+:root {
+    --backgroundMain: #e0e4e7; 
+    --boxShadowColor: #404040;
+    --cardBackground: #20b2aa;
+    --backgroundAlternate: #d1e0de;
+} 
+
+body {
+    background-color: var(--backgroundMain);
+    margin: 0px auto;
+    max-width: 1200px;
+    min-width: 320px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+.section {
+    display: grid;
+    margin: 20px 10px;
+}
+
+#inputs {
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px 10px;
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-row: 1 / -1;
+}
+
+.inputCard {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+}
+
+.summaryCard {
+    padding: 5px 5px;
+    background-color: var(--cardBackground);
+    margin: 5px;
+    box-shadow: 5px 5px 5px var(--boxShadowColor);
+    border-radius: 25px;
+    max-width: 250px;
+    min-width: 100px;
+}
+
+#summary {
+    border-top: 2px solid var(--cardBackground);
+    grid-template-rows: 1;
+    grid-template-columns: repeat(4, 1fr);
+
+}
+
+/*
+https://www.color-hex.com/color-palette/2773
+#20b2aa	(32,178,170)
+#008b8b	(0,139,139)
+#d1e0de	(209,224,222)
+#e0e4e7	(224,228,231)
+#404040
+*/

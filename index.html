@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css\style.css">
+    <title>Mortgage Payment Calculator</title>
+  </head>
+  <body>
+      <main>
+        <h1>Mortgage Payment Calculator</h1>
+        <div id="inputsContainer">
+            <fieldset class="section" id="inputs">
+                <legend>Parameters</legend>
+                <div class="inputCard" id="cardInterestRate">
+                    <label for="interestRateInput" class="inputLabel">Intereste Rate: 
+                        <input type="number" name="interestRate" min="0" step="0.001" id="interestRateInput">
+                    </label>
+                </div>
+                <!--Start Date-->
+                <div class="inputCard" id="inputStartDate">
+                    <label for="startDateInput" class="inputLabel">Start Date: 
+                        <input type="date" name="startDate" id="startDateInput">
+                    </label>
+                </div>
+                <!--Terms (15 / 30)-->
+                <div class="inputCard" id="inputLoanDuration">
+                    <!--Radio Buttons for 15 / 30 year-->
+                </div>
+                <!--Taxes-->
+                <div class="inputCard" id="inputTaxes">
+                    <label for="taxesInput" class="inputLabel">Annual Taxes: 
+                        <input type="number" name="taxes" min="0" step="0.01" id="taxesInput">
+                    </label>
+                </div>
+                <!--Insurance-->
+                <div class="inputCard" id="inputInsurance"></div>
+                <!--HOA Fees-->
+                <div class="inputCard" id="inputHoaFees"></div>
+            </fieldset>
+            <h2>Parameters</h2>
+            <!--Interest Rate-->
+            
+            <!--ARM?-->
+        </div>
+        <div class="section" id="summary">
+            <h2>Summary</h2>
+            <!--Total Payment-->
+            <div class="summaryCard" id="summaryTotalPayment">
+                <h3>Total Payment</h3>
+                <p>$1000.00</p>
+            </div>
+            <!--Payment Breakdown-->
+            <div class="summaryCard" id="summaryPrincipalInterest">
+                <h3>Principal / Interest</h3>
+                <p>$900.00 / $100.00</p>
+            </div>
+            <!--Total Interest-->
+            <div class="summaryCard" id="summaryTotalInterest">
+                <h3>Total Interest</h3>
+                <p>$225,623.65</p>
+            </div>
+            <!--Maturity-->
+        </div>
+        <div class="section" id="details">
+            <!--Table of Monthly Detail-->
+                <!--Month Number-->
+                <!--Year / Month-->
+                <!--Total Payment-->
+                <!--Principal-->
+                <!--Interest-->
+                <!--Insurance-->
+                <!--Outstanding Principal-->
+                <!--Interest Running Total-->
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+                <!---->
+        </div>
+      </main>
+  </body>
+</html>
