@@ -12,6 +12,7 @@
         <div id="inputsContainer">
             <fieldset class="section" id="inputs">
                 <legend>Parameters</legend>
+                <!--Interest Rate-->
                 <div class="inputCard" id="cardInterestRate">
                     <label for="interestRateInput" class="inputLabel">Intereste Rate: 
                         <input type="number" name="interestRate" min="0" step="0.001" id="interestRateInput">
@@ -25,6 +26,12 @@
                 </div>
                 <!--Terms (15 / 30)-->
                 <div class="inputCard" id="inputLoanDuration">
+                    <label for="termInput">Term (Years): 
+                        <label for="year15Input">15</label>
+                        <input type="radio" name="year15" id="year15Input">
+                        <label for="year30Input">30</label>
+                        <input type="radio" name="year30" id="year30Input">
+                    </label>
                     <!--Radio Buttons for 15 / 30 year-->
                 </div>
                 <!--Taxes-->
@@ -33,18 +40,16 @@
                         <input type="number" name="taxes" min="0" step="0.01" id="taxesInput">
                     </label>
                 </div>
+                <input type="button" value="Calculate" id="calculateButton">
                 <!--Insurance-->
-                <div class="inputCard" id="inputInsurance"></div>
+                <!--<div class="inputCard" id="inputInsurance"></div>-->
                 <!--HOA Fees-->
-                <div class="inputCard" id="inputHoaFees"></div>
-            </fieldset>
-            <h2>Parameters</h2>
-            <!--Interest Rate-->
-            
+                <!--<div class="inputCard" id="inputHoaFees"></div>-->
+            </fieldset>           
             <!--ARM?-->
+            
         </div>
         <div class="section" id="summary">
-            <h2>Summary</h2>
             <!--Total Payment-->
             <div class="summaryCard" id="summaryTotalPayment">
                 <h3>Total Payment</h3>
