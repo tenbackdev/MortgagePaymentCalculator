@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css\style.css">
     <title>Mortgage Payment Calculator</title>
+    
   </head>
   <body>
       <main>
@@ -26,13 +27,12 @@
                 </div>
                 <!--Terms (15 / 30)-->
                 <div class="inputCard" id="inputLoanDuration">
-                    <label for="termInput">Term (Years): 
-                        <label for="year15Input">15</label>
-                        <input type="radio" name="year15" id="year15Input">
-                        <label for="year30Input">30</label>
-                        <input type="radio" name="year30" id="year30Input">
-                    </label>
-                    <!--Radio Buttons for 15 / 30 year-->
+                    <p>Term (Years): 
+                        <label for="term15Input">15</label>
+                        <input type="radio" name="termInput" id="term15Input" value="15">
+                        <label for="term30Input">30</label>
+                        <input type="radio" name="termInput" id="term30Input" value="30">
+                    </p>
                 </div>
                 <!--Taxes-->
                 <div class="inputCard" id="inputTaxes">
@@ -86,4 +86,5 @@
         </div>
       </main>
   </body>
+  <script src="js/script.js"></script>
 </html>
