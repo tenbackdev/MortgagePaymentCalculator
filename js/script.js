@@ -5,9 +5,22 @@ class Mortgage {
         this.principalCents = principalCents;
     }
 
+    setPrincipal(principal) {
+        //Saving this in cents to avoid decimals in JS logic
+        this.principalCents = principalDollars * 100;
+    }
+
+    getPrincipal() {
+        return this.principalCents / 100;
+    }
+
     setInterestRate(interestRate) {
         //Saving this in BPS to avoid decimals in JS logic
-        this.interestRateBps = interestRate * 100
+        this.interestRateBps = interestRate * 100;
+    }
+
+    getInterestRate() {
+        return this.interestRateBps / 100;
     }
 
     toString() {
@@ -15,7 +28,7 @@ class Mortgage {
     }
 }
 
-const myMortgage = new Mortgage(275, '2024-01-22', '25200000');
+const myMortgage = new Mortgage(275, '2024-01-22', '25200023');
 
 const startDateField = document.getElementById("startDateInput");
 const intertestRateField = document.getElementById("interestRateInput");
@@ -26,6 +39,9 @@ function changeInterestRate() {
     myMortgage.setInterestRate(intertestRateField.value)
     console.log(myMortgage.toString());
 }
+
+console.log(myMortgage.getInterestRate())
+console.log(myMortgage.getPrincipal())
 
 
 
