@@ -5,6 +5,14 @@ class Mortgage {
         this.principalCents = principal * 100; //Is there a way to DRY this up?
     }    
 
+    getPrincipalAndInterest() {
+        let interestMonthly = (this.interestRateBps / (12 * 10000));
+        let loanTerm = 360;
+        let interestCalc = (1.0 + interestMonthly) ** loanTerm;
+        console.log(`IM: ${interestMonthly}, LT: ${loanTerm}, IC: ${interestCalc}`)
+        return Math.round((this.principalCents * interestMonthly * interestCalc / (interestCalc - 1)), 0) / 100;
+    }
+
     setPrincipal(principal) {
         //Saving this in cents to avoid decimals in JS logic
         this.principalCents = principal * 100;
@@ -28,7 +36,8 @@ class Mortgage {
     }
 }
 
-const myMortgage = new Mortgage(2.75, '2024-01-22', '252000.23');
+const myMortgage = new Mortgage(3.25, '2024-01-22', '260000.00');
+console.log(myMortgage.getPrincipalAndInterest());
 
 const startDateField = document.getElementById("startDateInput");
 const intertestRateField = document.getElementById("interestRateInput");
