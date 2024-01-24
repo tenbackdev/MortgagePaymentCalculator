@@ -1,13 +1,13 @@
 class Mortgage {
-    constructor(interestRateBps, startDate, principalCents) {
-        this.interestRateBps = interestRateBps;
+    constructor(interestRate, startDate, principal) {
+        this.interestRateBps = interestRate * 100;
         this.startDate = startDate;
-        this.principalCents = principalCents;
-    }
+        this.principalCents = principal * 100; //Is there a way to DRY this up?
+    }    
 
     setPrincipal(principal) {
         //Saving this in cents to avoid decimals in JS logic
-        this.principalCents = principalDollars * 100;
+        this.principalCents = principal * 100;
     }
 
     getPrincipal() {
@@ -24,11 +24,11 @@ class Mortgage {
     }
 
     toString() {
-        return `Mortgage is for \$${this.principalCents / 100}, with a ${this.interestRateBps / 100}% interest rate, starting ${this.startDate}.`
+        return `Mortgage is for \$${this.getPrincipal()}, with a ${this.getInterestRate()}% interest rate, starting ${this.startDate}.`
     }
 }
 
-const myMortgage = new Mortgage(275, '2024-01-22', '25200023');
+const myMortgage = new Mortgage(2.75, '2024-01-22', '252000.23');
 
 const startDateField = document.getElementById("startDateInput");
 const intertestRateField = document.getElementById("interestRateInput");
