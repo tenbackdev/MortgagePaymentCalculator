@@ -29,10 +29,7 @@ class Mortgage {
     }
 
     setTerm(termYears) {
-       
         this.termMonths = termYears * 12
-        console.log('HELLO')
-        console.log(this.termMonths)
     }
 
     getTerm() {
@@ -56,11 +53,16 @@ const startDateField = document.getElementById("startDateInput");
 const intertestRateField = document.getElementById("interestRateInput");
 const radioTerm15 = document.getElementById("radioTerm15")
 const radioTerm30 = document.getElementById("radioTerm30")
+const buttonCalc = document.getElementById("calculateButton");
+const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
+
+console.log(summaryTotalPayment.innerHTML)
 
 //Adding Callbacks
 intertestRateField.addEventListener('change', changeInterestRate)
 radioTerm30.addEventListener('change', radioTermChange)
 radioTerm15.addEventListener('change', radioTermChange)
+buttonCalc.addEventListener('click', calculateMortgage)
 
 function changeInterestRate() {
     myMortgage.setInterestRate(intertestRateField.value)
@@ -68,13 +70,17 @@ function changeInterestRate() {
 }
 
 function radioTermChange() {
-    
     if (radioTerm30.checked) {
         myMortgage.setTerm(30);
         
     } else {
         myMortgage.setTerm(15);
     }
+}
+
+function calculateMortgage() {
+    console.log('Button Clicked');
+    summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
 }
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -85,11 +91,6 @@ document.addEventListener('DOMContentLoaded', function(){
     let event = new Event('change');
     radioTerm30.dispatchEvent(event);
 })
-
-console.log(myMortgage.toString());
-console.log(myMortgage.termMonths)
-
-console.log(Object.keys(myMortgage))
 
 
 
