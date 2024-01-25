@@ -45,18 +45,17 @@ class Mortgage {
     }
 }
 
-const myMortgage = new Mortgage(3.25, '2024-01-22', '260000.00');
-console.log(myMortgage.getPrincipalAndInterest());
+let myMortgage = new Mortgage(0.00, new Date(), '0');
 
 //Add Each of The Elements to JS Script
-const startDateField = document.getElementById("startDateInput");
+const principalAmountField = document.getElementById("principalAmountInput");
 const intertestRateField = document.getElementById("interestRateInput");
+const startDateField = document.getElementById("startDateInput");
 const radioTerm15 = document.getElementById("radioTerm15")
 const radioTerm30 = document.getElementById("radioTerm30")
+const annualTaxesField = document.getElementById("taxesInput");
 const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
-
-console.log(summaryTotalPayment.innerHTML)
 
 //Adding Callbacks
 intertestRateField.addEventListener('change', changeInterestRate)
@@ -79,11 +78,19 @@ function radioTermChange() {
 }
 
 function calculateMortgage() {
-    console.log('Button Clicked');
     summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
 }
 
 document.addEventListener('DOMContentLoaded', function(){
+    //set defaults
+    principalAmountField.value = `250000.00`;
+    intertestRateField.value = `3.25`;
+    startDateField.valueAsDate = new Date();
+    annualTaxesField.value = `5000.00`;
+
+    myMortgage.setPrincipal(principalAmountField.value);
+    myMortgage.setInterestRate(intertestRateField.value);
+
     //default to 30 year term
     radioTerm30.checked = true;
 
