@@ -6,9 +6,18 @@ class Mortgage {
         this.termMonths = 360; //How do you make this default to Null?
     }    
 
+    formatDollarsAndCents(myNumber) {
+        return myNumber.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+    }
+
+    getTotalInterest() {
+        let princAndIntPayment = this.getPrincipalAndInterest();
+        return (princAndIntPayment * this.termMonths) - this.getPrincipal();
+    }
+
     getPrincipalAndInterest() {
         let interestMonthly = (this.interestRateBps / (12 * 10000));
-        let loanTerm = 360;
+        let loanTerm = this.termMonths;
         let interestCalc = (1.0 + interestMonthly) ** loanTerm;
         console.log(`IM: ${interestMonthly}, LT: ${loanTerm}, IC: ${interestCalc}`)
         return Math.round((this.principalCents * interestMonthly * interestCalc / (interestCalc - 1)), 0) / 100;
@@ -56,6 +65,7 @@ const radioTerm30 = document.getElementById("radioTerm30")
 const annualTaxesField = document.getElementById("taxesInput");
 const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
+const summaryTotalInterest = document.querySelector("#summaryTotalInterest p")
 
 //Adding Callbacks
 intertestRateField.addEventListener('change', changeInterestRate)
@@ -79,6 +89,7 @@ function radioTermChange() {
 
 function calculateMortgage() {
     summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
+    summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
 }
 
 document.addEventListener('DOMContentLoaded', function(){
