@@ -16,7 +16,7 @@ class Mortgage {
     }
 
     getPrincipalAndInterest() {
-        let interestMonthly = (this.interestRateBps / (12 * 10000));
+        let interestMonthly = (this.interestRateBps / (12 * 10000)); //How do I make this DRY?
         let loanTerm = this.termMonths;
         let interestCalc = (1.0 + interestMonthly) ** loanTerm;
         console.log(`IM: ${interestMonthly}, LT: ${loanTerm}, IC: ${interestCalc}`)
@@ -45,6 +45,14 @@ class Mortgage {
         return this.termMonths / 12
     }
 
+    getPrincipalAndInterestSplit() {
+        let totalPI = this.getPrincipalAndInterest();
+        let interestMonthly = (this.interestRateBps / (12 * 10000)); //How do I make this DRY?
+        let interestPayment = Math.round((interestMonthly * this.principalCents), 0) / 100
+        console.log(interestPayment);
+        return [Math.round(100 * (totalPI - interestPayment), 0) / 100, interestPayment];
+    }
+
     getInterestRate() {
         return this.interestRateBps / 100;
     }
@@ -65,6 +73,7 @@ const radioTerm30 = document.getElementById("radioTerm30")
 const annualTaxesField = document.getElementById("taxesInput");
 const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
+const summaryPrincipalInterest = document.querySelector("#summaryPrincipalInterest p")
 const summaryTotalInterest = document.querySelector("#summaryTotalInterest p")
 
 //Adding Callbacks
@@ -90,6 +99,9 @@ function radioTermChange() {
 function calculateMortgage() {
     summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
     summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
+    let pni = myMortgage.getPrincipalAndInterestSplit();
+    summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
+    console.log(myMortgage.getPrincipalAndInterestSplit());
 }
 
 document.addEventListener('DOMContentLoaded', function(){
