@@ -57,6 +57,16 @@ class Mortgage {
         return this.interestRateBps / 100;
     }
 
+    get annualTaxes() {
+        console.log('HELP ME');
+        return this.termMonths * 12;
+    }
+
+    set annualTaxes(taxAmount) {
+        console.log('HELP');
+        return this.termMonths / 12;
+    }
+
     toString() {
         return `Mortgage is for \$${this.getPrincipal()}, with a ${this.getInterestRate()}% interest rate, starting ${this.startDate}, with a term of ${this.getTerm()} years.`
     }
@@ -120,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function(){
     //force the change to trigger the listener
     let event = new Event('change');
     radioTerm30.dispatchEvent(event);
+    console.log(myMortgage.annualTaxes = 50);
 })
 
 
