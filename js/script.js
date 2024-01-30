@@ -58,12 +58,10 @@ class Mortgage {
     }
 
     get annualTaxes() {
-        console.log('HELP ME');
         return this.termMonths * 12;
     }
 
     set annualTaxes(taxAmount) {
-        console.log('HELP');
         return this.termMonths / 12;
     }
 
@@ -131,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function(){
     let event = new Event('change');
     radioTerm30.dispatchEvent(event);
     console.log(myMortgage.annualTaxes = 50);
+    console.log(myMortgage.annualTaxes);
 })
 
 
