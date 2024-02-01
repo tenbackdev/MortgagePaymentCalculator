@@ -65,6 +65,15 @@ class Mortgage {
         return this.termMonths / 12;
     }
 
+    calculateMortageDetail() {
+        for (var i = 0; i < this.termMonths; i++) {
+            console.log(`This is the start of my for loop: ${i}`);
+            if(i === 10) {
+                break;
+             }
+        }
+    }
+
     toString() {
         return `Mortgage is for \$${this.getPrincipal()}, with a ${this.getInterestRate()}% interest rate, starting ${this.startDate}, with a term of ${this.getTerm()} years.`
     }
@@ -110,6 +119,7 @@ function calculateMortgage() {
     let pni = myMortgage.getPrincipalAndInterestSplit();
     summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
     console.log(myMortgage.getPrincipalAndInterestSplit());
+    myMortgage.calculateMortageDetail();
 }
 
 document.addEventListener('DOMContentLoaded', function(){
