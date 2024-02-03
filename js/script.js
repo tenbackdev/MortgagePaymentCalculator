@@ -19,7 +19,7 @@ class Mortgage {
         let interestMonthly = (this.interestRateBps / (12 * 10000)); //How do I make this DRY?
         let loanTerm = this.termMonths;
         let interestCalc = (1.0 + interestMonthly) ** loanTerm;
-        console.log(`IM: ${interestMonthly}, LT: ${loanTerm}, IC: ${interestCalc}`)
+        //console.log(`IM: ${interestMonthly}, LT: ${loanTerm}, IC: ${interestCalc}`)
         return Math.round((this.principalCents * interestMonthly * interestCalc / (interestCalc - 1)), 0) / 100;
     }
 
@@ -66,11 +66,30 @@ class Mortgage {
     }
 
     calculateMortageDetail() {
-        for (var i = 0; i < this.termMonths; i++) {
-            console.log(`This is the start of my for loop: ${i}`);
-            if(i === 10) {
+        let outstandingPrincipalCents = this.principalCents;
+        let minPrincIntPaymentCents = this.getPrincipalAndInterest() * 100;
+        let monthNumber = 0;
+        let interestRunningTotalCents = 0;
+        let curInterestCents, curPrincipalCents; 
+        console.log(`OPC: ${outstandingPrincipalCents}, MPIP: ${minPrincIntPaymentCents}`)
+
+        while (outstandingPrincipalCents > 0) {
+            monthNumber+=1
+            curInterestCents = Math.round(outstandingPrincipalCents * (this.interestRateBps / (12 * 10000)), 0);
+            
+            //handle final payment scenario where total payment may be less than the minimum payment
+
+            curPrincipalCents = minPrincIntPaymentCents - curInterestCents;
+            interestRunningTotalCents += curInterestCents;
+            outstandingPrincipalCents -= curPrincipalCents;
+            console.log(`MN: ${monthNumber}, MPIPC: ${minPrincIntPaymentCents}, CIC: ${curInterestCents}, CPC: ${curPrincipalCents}`)
+            console.log(`IRTC: ${interestRunningTotalCents}, OPC: ${outstandingPrincipalCents}`);
+            
+            //work to add these data points to the HTML table
+
+            if(monthNumber === 3) {
                 break;
-             }
+            }
         }
     }
 
@@ -101,7 +120,7 @@ buttonCalc.addEventListener('click', calculateMortgage)
 
 function changeInterestRate() {
     myMortgage.setInterestRate(intertestRateField.value)
-    console.log(myMortgage.toString());
+    ///console.log(myMortgage.toString());
 }
 
 function radioTermChange() {
@@ -118,7 +137,7 @@ function calculateMortgage() {
     summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     let pni = myMortgage.getPrincipalAndInterestSplit();
     summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
-    console.log(myMortgage.getPrincipalAndInterestSplit());
+    //console.log(myMortgage.getPrincipalAndInterestSplit());
     myMortgage.calculateMortageDetail();
 }
 
@@ -138,8 +157,8 @@ document.addEventListener('DOMContentLoaded', function(){
     //force the change to trigger the listener
     let event = new Event('change');
     radioTerm30.dispatchEvent(event);
-    console.log(myMortgage.annualTaxes = 50);
-    console.log(myMortgage.annualTaxes);
+    //console.log(myMortgage.annualTaxes = 50);
+    //console.log(myMortgage.annualTaxes);
 })
 
 
