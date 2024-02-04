@@ -1,13 +1,21 @@
 class Mortgage {
     constructor(interestRate, startDate, principal) {
         this.interestRateBps = interestRate * 100;
-        this.startDate = startDate;
+        this.startDate = new Date(startDate);
         this.principalCents = principal * 100; //Is there a way to DRY this up?
         this.termMonths = 360; //How do you make this default to Null?
     }    
 
     formatDollarsAndCents(myNumber) {
         return myNumber.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+    }
+
+    formatPaymentMonth(paymentDate) {
+        var curDate = new Date(paymentDate)
+            , month = '' + (curDate.getMonth() + 1)
+            , year = curDate.getFullYear();
+
+        return [year, month.length < 2 ? '0' + month : month].join('-'); 
     }
 
     getTotalInterest() {
@@ -70,7 +78,8 @@ class Mortgage {
         let minPrincIntPaymentCents = this.getPrincipalAndInterest() * 100;
         let monthNumber = 0;
         let interestRunningTotalCents = 0;
-        let curInterestCents, curPrincipalCents; 
+        let curInterestCents, curPrincipalCents, curPrincipalInterestCents; 
+        let htmlInnerText = '';
         console.log(`OPC: ${outstandingPrincipalCents}, MPIP: ${minPrincIntPaymentCents}`)
 
         while (outstandingPrincipalCents > 0) {
@@ -78,19 +87,37 @@ class Mortgage {
             curInterestCents = Math.round(outstandingPrincipalCents * (this.interestRateBps / (12 * 10000)), 0);
             
             //handle final payment scenario where total payment may be less than the minimum payment
-
-            curPrincipalCents = minPrincIntPaymentCents - curInterestCents;
+            if (outstandingPrincipalCents >= minPrincIntPaymentCents) {
+                curPrincipalCents = minPrincIntPaymentCents - curInterestCents;  
+                curPrincipalInterestCents = minPrincIntPaymentCents;            
+            } else {
+                curPrincipalCents = outstandingPrincipalCents;
+                curPrincipalInterestCents = outstandingPrincipalCents + curInterestCents;
+            }
+            
             interestRunningTotalCents += curInterestCents;
             outstandingPrincipalCents -= curPrincipalCents;
-            console.log(`MN: ${monthNumber}, MPIPC: ${minPrincIntPaymentCents}, CIC: ${curInterestCents}, CPC: ${curPrincipalCents}`)
-            console.log(`IRTC: ${interestRunningTotalCents}, OPC: ${outstandingPrincipalCents}`);
+            //console.log(`MN: ${monthNumber}, MPIPC: ${minPrincIntPaymentCents}, CIC: ${curInterestCents}, CPC: ${curPrincipalCents}`)
+            //console.log(`IRTC: ${interestRunningTotalCents}, OPC: ${outstandingPrincipalCents}`);
             
-            //work to add these data points to the HTML table
+            //work to add these to final list of rows of html to be returned.
+            htmlInnerText += `<tr>
+                <td>${monthNumber}</td>
+                <td>${this.formatPaymentMonth(new Date(this.startDate.setMonth(this.startDate.getMonth() + (monthNumber === 1 ? 0 : 1))))}</td>
+                <td>${this.formatDollarsAndCents(curPrincipalInterestCents / 100)}</td>
+                <td>${this.formatDollarsAndCents(curPrincipalCents / 100)}</td>
+                <td>${this.formatDollarsAndCents(curInterestCents / 100)}</td>
+                <td>$50.00</td>
+                <td>${this.formatDollarsAndCents(outstandingPrincipalCents / 100)}</td>
+                <td>${this.formatDollarsAndCents(interestRunningTotalCents / 100)}</td>
+            </tr>`;
 
-            if(monthNumber === 3) {
-                break;
-            }
+            //if(monthNumber === 3) {
+            //    break;
+            //}
         }
+
+        return htmlInnerText;
     }
 
     toString() {
@@ -110,7 +137,8 @@ const annualTaxesField = document.getElementById("taxesInput");
 const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
 const summaryPrincipalInterest = document.querySelector("#summaryPrincipalInterest p")
-const summaryTotalInterest = document.querySelector("#summaryTotalInterest p")
+const summaryTotalInterest = document.querySelector("#summaryTotalInterest p");
+const tablePaymentDetails = document.getElementById('tablePaymentDetails');
 
 //Adding Callbacks
 intertestRateField.addEventListener('change', changeInterestRate)
@@ -138,7 +166,9 @@ function calculateMortgage() {
     let pni = myMortgage.getPrincipalAndInterestSplit();
     summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
     //console.log(myMortgage.getPrincipalAndInterestSplit());
-    myMortgage.calculateMortageDetail();
+    //console.log(myMortgage.calculateMortageDetail());
+    //console.log(tablePaymentDetails);
+    tablePaymentDetails.innerHTML += myMortgage.calculateMortageDetail();
 }
 
 document.addEventListener('DOMContentLoaded', function(){
