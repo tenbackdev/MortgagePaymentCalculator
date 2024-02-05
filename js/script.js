@@ -79,7 +79,7 @@ class Mortgage {
         let monthNumber = 0;
         let interestRunningTotalCents = 0;
         let curInterestCents, curPrincipalCents, curPrincipalInterestCents; 
-        let htmlInnerText = '';
+        let htmlInnerText = '<tbody>';
         console.log(`OPC: ${outstandingPrincipalCents}, MPIP: ${minPrincIntPaymentCents}`)
 
         while (outstandingPrincipalCents > 0) {
@@ -116,6 +116,9 @@ class Mortgage {
             //    break;
             //}
         }
+
+        //add closing tbody tag at end
+        htmlInnerText += '</tbody>'
 
         return htmlInnerText;
     }

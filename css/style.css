@@ -59,12 +59,26 @@ h2 {
 #summary {
     border-top: 2px solid var(--cardBackground);
     grid-template-rows: 1;
-    grid-template-columns: repeat(4, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
 }
 
 #details table, th, td {
     border: 1px solid black;
+    border-collapse: collapse;
+}
+
+#details table tbody tr {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+#details table tbody tr:nth-child(even) {
+    background-color: var(--backgroundAlternate);
+}
+
+#details table tbody tr:nth-child(odd) {
+    background-color: var(--backgroundMain);
 }
 
 /*
