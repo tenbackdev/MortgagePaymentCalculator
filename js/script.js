@@ -1,4 +1,9 @@
-class Mortgage {
+//const Mortgages = require('./mortgage');
+
+const myNewMortgage = new Mortgage(100000.00, 6.75, 30);
+console.log(myNewMortgage);
+
+class OldMortgage {
     constructor(interestRate, startDate, principal) {
         this.interestRateBps = interestRate * 100;
         this.startDate = new Date(startDate);
@@ -128,7 +133,7 @@ class Mortgage {
     }
 }
 
-let myMortgage = new Mortgage(0.00, new Date(), '0');
+let myMortgage = new OldMortgage(0.00, new Date(), '0');
 
 //Add Each of The Elements to JS Script
 const principalAmountField = document.getElementById("principalAmountInput");
