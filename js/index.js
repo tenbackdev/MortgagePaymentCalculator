@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', function(){
     startDateField.valueAsDate = new Date();
     annualTaxesField.value = `5000.00`;
 
-    myMortgage.principalDollars = principalAmountField.value;
-    myMortgage.interestRate = intertestRateField.value;
+    myMortgage.principalDollars = parseFloat(principalAmountField.value);
+    myMortgage.interestRate = parseFloat(intertestRateField.value);
 
     //default to 30 year term
     //force the change to trigger the listener
@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 //Establish Mortgage
-console.log(myMortgage);
+//console.log(myMortgage);
 
 ////Adding Callbacks
 //intertestRateField.addEventListener('change', changeInterestRate)
 radioTerm30.addEventListener('change', radioTermChange)
 radioTerm15.addEventListener('change', radioTermChange)
-//buttonCalc.addEventListener('click', calculateMortgage)
+buttonCalc.addEventListener('click', calculateMortgage)
 
 function radioTermChange() {
     if (radioTerm30.checked) {
@@ -49,5 +49,16 @@ function radioTermChange() {
     } else {
         myMortgage.loanTerm = 15;
     }
+}
+
+function calculateMortgage() {
+    //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
+    //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
+    console.log(myMortgage.calculateMortgageDetail());
+    //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
+    //console.log(myMortgage.getPrincipalAndInterestSplit());
+    //console.log(myMortgage.calculateMortageDetail());
+    //console.log(tablePaymentDetails);
+    //tablePaymentDetails.innerHTML += myMortgage.calculateMortageDetail();
 }
 
