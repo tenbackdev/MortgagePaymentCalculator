@@ -59,7 +59,7 @@ class Mortgage {
             }
         }
 
-        console.log(amortArray);
+        return amortArray;
 
     }
 
