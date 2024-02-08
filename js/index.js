@@ -13,6 +13,10 @@ const tablePaymentDetails = document.getElementById('tablePaymentDetails');
 
 let myMortgage = new Mortgage(principalAmountField.value, intertestRateField.value, radioTerm30.checked ? 30 : 15);
 
+function formatDollarsAndCents(myNumber) {
+    return myNumber.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+}
+
 document.addEventListener('DOMContentLoaded', function(){
     //set defaults
     //look to replace this - probably shouldn't have hardcoded values in the script.
@@ -59,20 +63,25 @@ function calculateMortgage() {
     //console.log(myMortgage.getPrincipalAndInterestSplit());
     //console.log(myMortgage.calculateMortageDetail());
     //console.log(tablePaymentDetails);
-    tablePaymentDetails.innerHTML += calculateMortgageDetail();
+    tablePaymentDetails.innerHTML += populateMortgageDetail();
 }
 
-function calculateMortgageDetail() {
+function populateMortgageDetail() {
     //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     let htmlInnerText = '<tbody>';
-    for (month in myMortgage.calculateMortgageDetail()) {
+    let amortSchedJSON = myMortgage.calculateMortgageDetail();
+    for (let payment in amortSchedJSON) {
         //work to add these to final list of rows of html to be returned.
+        console.log(payment);
 
         htmlInnerText += `<tr>
-            <td>${month['principalInterest']}</td>
-            <td>${month['principal']}</td>
-            <td>${month['interest']}</td>
+            <td>${amortSchedJSON[payment].paymentNumber}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].principalInterest)}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].principal)}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].interest)}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].principalOutstanding)}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].interestRunningTotal)}</td>
         </tr>`;
 
         //htmlInnerText += `<tr>
