@@ -54,7 +54,41 @@ function radioTermChange() {
 function calculateMortgage() {
     //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
-    console.log(myMortgage.calculateMortgageDetail());
+    //let pni = myMortgage.getPrincipalAndInterestSplit();
+    //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
+    //console.log(myMortgage.getPrincipalAndInterestSplit());
+    //console.log(myMortgage.calculateMortageDetail());
+    //console.log(tablePaymentDetails);
+    tablePaymentDetails.innerHTML += calculateMortgageDetail();
+}
+
+function calculateMortgageDetail() {
+    //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
+    //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
+    let htmlInnerText = '<tbody>';
+    for (month in myMortgage.calculateMortgageDetail()) {
+        //work to add these to final list of rows of html to be returned.
+
+        htmlInnerText += `<tr>
+            <td>${month['principalInterest']}</td>
+            <td>${month['principal']}</td>
+            <td>${month['interest']}</td>
+        </tr>`;
+
+        //htmlInnerText += `<tr>
+        //<td>${monthNumber}</td>
+        //<td>${this.formatPaymentMonth(new Date(this.startDate.setMonth(this.startDate.getMonth() + (monthNumber === 1 ? 0 : 1))))}</td>
+        //    <td>${this.formatDollarsAndCents(curPrincipalInterestCents / 100)}</td>
+        //    <td>${this.formatDollarsAndCents(curPrincipalCents / 100)}</td>
+        //    <td>${this.formatDollarsAndCents(curInterestCents / 100)}</td>
+        //    <td>$50.00</td>
+        //    <td>${this.formatDollarsAndCents(outstandingPrincipalCents / 100)}</td>
+        //    <td>${this.formatDollarsAndCents(interestRunningTotalCents / 100)}</td>
+        //</tr>`;
+    };
+    //add closing tbody tag at end
+    htmlInnerText += '</tbody>'
+    return htmlInnerText;
     //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
     //console.log(myMortgage.getPrincipalAndInterestSplit());
     //console.log(myMortgage.calculateMortageDetail());
