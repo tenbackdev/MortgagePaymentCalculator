@@ -9,7 +9,7 @@ const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
 const summaryPrincipalInterest = document.querySelector("#summaryPrincipalInterest p")
 const summaryTotalInterest = document.querySelector("#summaryTotalInterest p");
-const tablePaymentDetails = document.getElementById('tablePaymentDetails');
+const tablePaymentDetailsBody = document.getElementById('tablePaymentDetailsBody');
 
 let myMortgage = new Mortgage(principalAmountField.value, intertestRateField.value, radioTerm30.checked ? 30 : 15);
 
@@ -56,6 +56,8 @@ function radioTermChange() {
 }
 
 function calculateMortgage() {
+    myMortgage.principalDollars = parseFloat(principalAmountField.value);
+    myMortgage.interestRate = parseFloat(intertestRateField.value);
     //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     //let pni = myMortgage.getPrincipalAndInterestSplit();
@@ -63,18 +65,19 @@ function calculateMortgage() {
     //console.log(myMortgage.getPrincipalAndInterestSplit());
     //console.log(myMortgage.calculateMortageDetail());
     //console.log(tablePaymentDetails);
-    tablePaymentDetails.innerHTML += populateMortgageDetail();
+    console.log(myMortgage);
+    tablePaymentDetailsBody.innerHTML = "";
+    tablePaymentDetailsBody.innerHTML = populateMortgageDetail();
 }
 
 function populateMortgageDetail() {
     //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
-    let htmlInnerText = '<tbody>';
+    let htmlInnerText = ''; //= '<tbody>';
     let amortSchedJSON = myMortgage.calculateMortgageDetail();
     for (let payment in amortSchedJSON) {
         //work to add these to final list of rows of html to be returned.
-        console.log(payment);
-
+        
         htmlInnerText += `<tr>
             <td>${amortSchedJSON[payment].paymentNumber}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].principalInterest)}</td>
@@ -84,19 +87,9 @@ function populateMortgageDetail() {
             <td>${formatDollarsAndCents(amortSchedJSON[payment].interestRunningTotal)}</td>
         </tr>`;
 
-        //htmlInnerText += `<tr>
-        //<td>${monthNumber}</td>
-        //<td>${this.formatPaymentMonth(new Date(this.startDate.setMonth(this.startDate.getMonth() + (monthNumber === 1 ? 0 : 1))))}</td>
-        //    <td>${this.formatDollarsAndCents(curPrincipalInterestCents / 100)}</td>
-        //    <td>${this.formatDollarsAndCents(curPrincipalCents / 100)}</td>
-        //    <td>${this.formatDollarsAndCents(curInterestCents / 100)}</td>
-        //    <td>$50.00</td>
-        //    <td>${this.formatDollarsAndCents(outstandingPrincipalCents / 100)}</td>
-        //    <td>${this.formatDollarsAndCents(interestRunningTotalCents / 100)}</td>
-        //</tr>`;
     };
     //add closing tbody tag at end
-    htmlInnerText += '</tbody>'
+    //htmlInnerText += '</tbody>'
     return htmlInnerText;
     //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
     //console.log(myMortgage.getPrincipalAndInterestSplit());
