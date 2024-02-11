@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function(){
     let event = new Event('change');
     radioTerm30.dispatchEvent(event);
 
+
+    event = new Event('click')
+    buttonCalc.dispatchEvent(event);
+
     console.log(myMortgage);
 })
 
