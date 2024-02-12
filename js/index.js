@@ -17,6 +17,52 @@ function formatDollarsAndCents(myNumber) {
     return myNumber.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 }
 
+function saveOrUpdateObjectToIndexedDB(objectToSave, objectStoreName) {
+    const request = indexedDB.open('mortgageDB', 1);
+
+    request.onerror = function(event) {
+        console.error(`IndexedDB error: ${event.target.errorCode}`)
+        
+    };
+
+    request.onsuccess = function(event) {
+        const db = event.target.result;
+        
+        const transaction = db.transaction("mortgageDB", "readwrite");
+        console.log(db);
+        const objectStore = transaction.objectStore("testThisName");
+
+        //Check if the obect already exists
+        console.log(objectToSave.id);
+        const getRequest = objectStore.get(objectToSave.id);
+
+        getRequest.onsuccess = function(event) {
+            const existingObject = event.target.result;
+            
+            
+
+            //If Object exists, update it. Else - add it
+            const addOrUpdateRequest = existingObject ? objectStore.put(objectToSave) : objectStore.add(objectToSave);
+            addOrUpdateRequest.onsuccess = function(event) {
+                console.log('Object saved or updated in IndexedDB');
+            };
+
+            addOrUpdateRequest.onerror = function(event) {
+                console.error('Error saving or updating object in IndexedDB', event.target.error);
+            };
+        };
+        
+        getRequest.onupgradeneeded = function(event) {
+            console.log('HELP')
+        }
+
+        getRequest.onerror = function(event) {
+            
+            console.error('Error retreiving object from IndexedDB', event.target.error);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function(){
     //set defaults
     //look to replace this - probably shouldn't have hardcoded values in the script.
@@ -38,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(){
     event = new Event('click')
     buttonCalc.dispatchEvent(event);
 
-    console.log(myMortgage);
+    //console.log(myMortgage);
 })
 
 
@@ -69,9 +115,12 @@ function calculateMortgage() {
     //console.log(myMortgage.getPrincipalAndInterestSplit());
     //console.log(myMortgage.calculateMortageDetail());
     //console.log(tablePaymentDetails);
-    console.log(myMortgage);
+    //console.log(myMortgage);
     tablePaymentDetailsBody.innerHTML = "";
     tablePaymentDetailsBody.innerHTML = populateMortgageDetail();
+    console.log('NO WAY');
+    saveOrUpdateObjectToIndexedDB(myMortgage, 'mortgageDB');
+    console.log('ME TOO');
 }
 
 function populateMortgageDetail() {
