@@ -18,43 +18,36 @@ function formatDollarsAndCents(myNumber) {
 }
 
 function saveOrUpdateObjectToIndexedDB(objectToSave, objectStoreName) {
-    const request = indexedDB.open('mortgageDB', 1);
+    const request = indexedDB.open('mortgageDB', 6);
 
     request.onerror = function(event) {
         console.error(`IndexedDB error: ${event.target.errorCode}`)
         
     };
 
+    request.onupgradeneeded = function(event) {
+        const db = event.target.result;
+
+        if (!db.objectStoreNames.contains('mortgage')) {
+            db.createObjectStore('mortgage', {keyPath: 'id', autoIncrement: true});
+            console.log('testing this object store');
+        }
+    }
+
+
     request.onsuccess = function(event) {
         const db = event.target.result;
-        
-        const transaction = db.transaction("mortgageDB", "readwrite");
         console.log(db);
-        const objectStore = transaction.objectStore("testThisName");
+        const transaction = db.transaction(['mortgage'], "readwrite");
+        console.log(db);
+        const objectStore = transaction.objectStore("mortgage");
 
-        //Check if the obect already exists
-        console.log(objectToSave.id);
-        const getRequest = objectStore.get(objectToSave.id);
+        const getRequest = objectStore.put(objectToSave);
 
         getRequest.onsuccess = function(event) {
-            const existingObject = event.target.result;
-            
-            
-
-            //If Object exists, update it. Else - add it
-            const addOrUpdateRequest = existingObject ? objectStore.put(objectToSave) : objectStore.add(objectToSave);
-            addOrUpdateRequest.onsuccess = function(event) {
-                console.log('Object saved or updated in IndexedDB');
-            };
-
-            addOrUpdateRequest.onerror = function(event) {
-                console.error('Error saving or updating object in IndexedDB', event.target.error);
-            };
+            console.log('successfully added');
         };
         
-        getRequest.onupgradeneeded = function(event) {
-            console.log('HELP')
-        }
 
         getRequest.onerror = function(event) {
             
