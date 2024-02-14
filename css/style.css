@@ -67,6 +67,15 @@ h2 {
     height: 500px;
 }
 
+thead tr {
+    border: 1px solid black !important;
+}
+
+thead th {
+    top: 0;
+    z-index: 99;    
+}
+
 #details thead tr th {
     background-color: rgba(100, 100, 100, 1);
 }
