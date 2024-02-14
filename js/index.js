@@ -56,7 +56,30 @@ function saveOrUpdateObjectToIndexedDB(objectToSave, objectStoreName) {
     }
 }
 
+function getObjectFromIndexedDB (objectStoreName, objectId) {
+    const openDB = indexedDB.open('mortgageDB', 6);
+
+    openDB.onsuccess = function (event) {
+        const db = event.target.result;
+        const myObj = db.transaction([objectStoreName], 'readwrite').objectStore(objectStoreName).get(objectId);
+        console.log(myObj);
+        myObj.onsuccess = function (event) {
+            const objPull = event.target.result;
+            return event.target.result;
+        }
+
+        console.log('Testing this piece.')
+    }
+
+    openDB.onerror = function (event) {
+        console.error('IndexedDB did not open.', event);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function(){
+    const myInitMortgage = getObjectFromIndexedDB('mortgage', 3);
+    console.log(myInitMortgage);
+
     //set defaults
     //look to replace this - probably shouldn't have hardcoded values in the script.
     principalAmountField.value = `250000.00`;
