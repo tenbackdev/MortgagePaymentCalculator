@@ -12,6 +12,7 @@ const summaryTotalInterest = document.querySelector("#summaryTotalInterest p");
 const tablePaymentDetailsBody = document.getElementById('tablePaymentDetailsBody');
 
 let myMortgage = new Mortgage(principalAmountField.value, intertestRateField.value, radioTerm30.checked ? 30 : 15);
+//console.log(myMortgage);
 
 function formatDollarsAndCents(myNumber) {
     return myNumber.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
@@ -37,9 +38,9 @@ function saveOrUpdateObjectToIndexedDB(objectToSave, objectStoreName) {
 
     request.onsuccess = function(event) {
         const db = event.target.result;
-        console.log(db);
+        //console.log(db);
         const transaction = db.transaction(['mortgage'], "readwrite");
-        console.log(db);
+        //console.log(db);
         const objectStore = transaction.objectStore("mortgage");
 
         const getRequest = objectStore.put(objectToSave);
@@ -56,34 +57,83 @@ function saveOrUpdateObjectToIndexedDB(objectToSave, objectStoreName) {
     }
 }
 
-function getObjectFromIndexedDB (objectStoreName, objectId) {
-    const openDB = indexedDB.open('mortgageDB', 6);
+function openDB(objectStoreName, objectId) {
+    return new Promise(
+        function(resolve, reject) {
+            const request = indexedDB.open('mortgageDB', 6);
 
-    openDB.onsuccess = function (event) {
-        const db = event.target.result;
-        const myObj = db.transaction([objectStoreName], 'readwrite').objectStore(objectStoreName).get(objectId);
-        console.log(myObj);
-        myObj.onsuccess = function (event) {
-            const objPull = event.target.result;
-            return event.target.result;
+            request.onsuccess = function (event) {
+                const db = event.target.result;
+                const myObj = db.transaction([objectStoreName], 'readwrite').objectStore(objectStoreName).get(objectId);
+                //console.log(myObj);
+                myObj.onsuccess = function(event) {
+                    resolve(event.target.result);
+                }
+            }
+
+            request.onerror = function(event) {
+                reject(event.target.result);
+            };
         }
+    );
+}
 
-        console.log('Testing this piece.')
-    }
+//let db;
 
-    openDB.onerror = function (event) {
-        console.error('IndexedDB did not open.', event);
-    }
+//function createDB() {
+//    const req = indexedDB.open('mortgageDB', 6);
+//    req.onsuccess = (event) => {
+//        db = req.result;
+//    };
+//}
+
+//const transaction = db.transaction('mortgage', 'readonly');
+//console.log(transaction);
+
+function getMortgageObject() {
+    let db;
+    const openDB = indexedDB.open('mortgageDB', 6);
+    let myObj;
+    openDB.onsuccess = (event) => {
+        //console.log(openDB.result);
+        //console.log(event.target.result);
+        db = event.target.result;
+        //console.log(db);
+        //hardcoded values that can be replaced later
+        const req = db.transaction('mortgage').objectStore('mortgage').get(63);
+
+        req.onsuccess = () => {
+            const myMortgageReq = req.result;
+            //console.log(myMortgageReq.principalDollars)
+            //principalAmountField.value = myMortgageReq.principalDollars;
+            myMortgage.principalDollars = myMortgageReq.principalDollars;
+            myMortgage.interestRate = myMortgageReq.interestRate;
+            //intertestRateField.value = `3.25`;
+            //startDateField.valueAsDate = new Date();
+            //annualTaxesField.value = myMortgage.;
+
+            //console.log(myMortgage);
+            //myObj = myMortgage;
+        }
+        
+        req.onerror = (error) => {
+            console.error("Error:", error);
+        }
+    };    
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    const myInitMortgage = getObjectFromIndexedDB('mortgage', 3);
-    console.log(myInitMortgage);
+    getMortgageObject()
+    //const myInitMortgage = resolve(openDB('mortgage', 1));
+    //console.log(resolve(myInitMortgage));
+
+    //console.log(getMortgageObject());
 
     //set defaults
     //look to replace this - probably shouldn't have hardcoded values in the script.
-    principalAmountField.value = `250000.00`;
-    intertestRateField.value = `3.25`;
+    console.log(myMortgage);
+    principalAmountField.value = `$${formatDollarsAndCents(myMortgage.principalDollars)}`;
+    intertestRateField.value = myMortgage.interestRate; //`3.25`;
     startDateField.valueAsDate = new Date();
     annualTaxesField.value = `5000.00`;
 
@@ -134,9 +184,9 @@ function calculateMortgage() {
     //console.log(myMortgage);
     tablePaymentDetailsBody.innerHTML = "";
     tablePaymentDetailsBody.innerHTML = populateMortgageDetail();
-    console.log('NO WAY');
+    //console.log('NO WAY');
     saveOrUpdateObjectToIndexedDB(myMortgage, 'mortgageDB');
-    console.log('ME TOO');
+    //console.log('ME TOO');
 }
 
 function populateMortgageDetail() {

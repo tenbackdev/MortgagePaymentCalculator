@@ -73,6 +73,7 @@ thead tr {
 
 thead th {
     top: 0;
+    border: 1px solid black !important;
     z-index: 99;    
 }
 
