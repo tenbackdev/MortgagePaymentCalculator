@@ -144,6 +144,13 @@ document.addEventListener('DOMContentLoaded', function(){
             //startDateField.valueAsDate = new Date();
             //annualTaxesField.value = myMortgage.;
 
+            console.log(myMortgage);
+            console.log(myMortgage.principalDollars);
+            principalAmountField.value = `${myMortgage.principalDollars}`;
+            intertestRateField.value = myMortgage.interestRate; //`3.25`;
+            startDateField.valueAsDate = new Date();
+            annualTaxesField.value = `5000.00`;
+
             //console.log(myMortgage);
             //myObj = myMortgage;
         }
@@ -159,12 +166,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //set defaults
     //look to replace this - probably shouldn't have hardcoded values in the script.
-    console.log(myMortgage);
-    console.log(myMortgage.principalDollars);
-    principalAmountField.value = `\$${myMortgage.principalDollars}`;
-    intertestRateField.value = myMortgage.interestRate; //`3.25`;
-    startDateField.valueAsDate = new Date();
-    annualTaxesField.value = `5000.00`;
+    
 
     myMortgage.principalDollars = parseFloat(principalAmountField.value);
     myMortgage.interestRate = parseFloat(intertestRateField.value);
