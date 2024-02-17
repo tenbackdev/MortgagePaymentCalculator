@@ -123,7 +123,35 @@ function getMortgageObject() {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-    getMortgageObject()
+    let db;
+    const openDB = indexedDB.open('mortgageDB', 6);
+    //let myObj;
+    openDB.onsuccess = (event) => {
+        //console.log(openDB.result);
+        //console.log(event.target.result);
+        db = event.target.result;
+        //console.log(db);
+        //hardcoded values that can be replaced later
+        const req = db.transaction('mortgage').objectStore('mortgage').get(63);
+
+        req.onsuccess = () => {
+            const myMortgageReq = req.result;
+            //console.log(myMortgageReq.principalDollars)
+            //principalAmountField.value = myMortgageReq.principalDollars;
+            myMortgage.principalDollars = myMortgageReq.principalDollars;
+            myMortgage.interestRate = myMortgageReq.interestRate;
+            //intertestRateField.value = `3.25`;
+            //startDateField.valueAsDate = new Date();
+            //annualTaxesField.value = myMortgage.;
+
+            //console.log(myMortgage);
+            //myObj = myMortgage;
+        }
+        
+        req.onerror = (error) => {
+            console.error("Error:", error);
+        }
+    }; 
     //const myInitMortgage = resolve(openDB('mortgage', 1));
     //console.log(resolve(myInitMortgage));
 
@@ -132,7 +160,8 @@ document.addEventListener('DOMContentLoaded', function(){
     //set defaults
     //look to replace this - probably shouldn't have hardcoded values in the script.
     console.log(myMortgage);
-    principalAmountField.value = `$${formatDollarsAndCents(myMortgage.principalDollars)}`;
+    console.log(myMortgage.principalDollars);
+    principalAmountField.value = `\$${myMortgage.principalDollars}`;
     intertestRateField.value = myMortgage.interestRate; //`3.25`;
     startDateField.valueAsDate = new Date();
     annualTaxesField.value = `5000.00`;
