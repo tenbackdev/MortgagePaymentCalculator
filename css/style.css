@@ -71,7 +71,7 @@ thead tr {
     border: 1px solid black !important;
 }
 
-thead th {
+thead tr {
     top: 0;
     border: 1px solid black !important;
     z-index: 99;    

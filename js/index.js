@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     myMortgage.principalDollars = parseFloat(principalAmountField.value);
     myMortgage.interestRate = parseFloat(intertestRateField.value);
+    myMortgage.additionalPrincipal = parseFloat(additionalPrincipalField.value);
 
     //default to 30 year term
     //force the change to trigger the listener
@@ -197,7 +198,12 @@ document.addEventListener('DOMContentLoaded', function(){
 //intertestRateField.addEventListener('change', changeInterestRate)
 radioTerm30.addEventListener('change', radioTermChange)
 radioTerm15.addEventListener('change', radioTermChange)
+additionalPrincipalField.addEventListener('change', addtlPrincChange)
 buttonCalc.addEventListener('click', calculateMortgage)
+
+function addtlPrincChange() {
+    myMortgage.additionalPrincipal = parseFloat(additionalPrincipalField.value);
+}
 
 function radioTermChange() {
     if (radioTerm30.checked) {
@@ -239,6 +245,7 @@ function populateMortgageDetail() {
             <td>${formatDollarsAndCents(amortSchedJSON[payment].principalInterest)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].principal)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].interest)}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].additionalPrincipal)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].principalOutstanding)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].interestRunningTotal)}</td>
         </tr>`;
