@@ -1,8 +1,9 @@
 class Mortgage {
-    constructor(principalDollars, interestRate, loanTerm) {
+    constructor(principalDollars, interestRate, loanTerm, additionalPrincipal) {
         this.principalDollars = principalDollars;
         this.interestRate = interestRate;
         this.loanTerm = loanTerm;
+        this.additionalPrincipal = additionalPrincipal ? additionalPrincipal : 0;
     }
 
     get loanTermMonths() {
@@ -33,29 +34,34 @@ class Mortgage {
         let minimumPrincipalAndInterest = this.calculateMinimumPrincipalAndInterest();
         let monthNumber = 0;
         let interestRunningTotal = 0;
-        let curInterest, curPrincipal, curPrincipalInterest;
+        let curInterest, curPrincipal, curPrincipalInterest, curPrincipalTotal;
+        let additionalPrincipal = this.additionalPrincipal;
         let amortArray = []
 
         while (outstandingPrincipal > 0) {
             monthNumber += 1
             curInterest = this.toFixedNumber((outstandingPrincipal * (this.monthlyInterestRate)), 2);
+            curPrincipalTotal = curPrincipal + additionalPrincipal;
 
             if (outstandingPrincipal >= minimumPrincipalAndInterest) {
                 curPrincipal = this.toFixedNumber((minimumPrincipalAndInterest - curInterest), 2);
+                curPrincipalTotal = curPrincipal + additionalPrincipal;
                 curPrincipalInterest = this.toFixedNumber(minimumPrincipalAndInterest, 2);
             } else {
                 curPrincipal = this.toFixedNumber(outstandingPrincipal, 2);
                 curPrincipalInterest = this.toFixedNumber(outstandingPrincipal + curInterest, 2);
+                curPrincipalTotal = curPrincipalInterest;
             }
 
             interestRunningTotal += curInterest;
-            outstandingPrincipal = this.toFixedNumber(outstandingPrincipal - curPrincipal, 2);
+            outstandingPrincipal = this.toFixedNumber(outstandingPrincipal - curPrincipalTotal, 2);
 
             amortArray.push({'paymentNumber': monthNumber
                 , 'principalInterest': curPrincipalInterest
                 , 'principal': curPrincipal
                 , 'interest': curInterest
-                , 'principalOutstanding': this.toFixedNumber(outstandingPrincipal, 2) 
+                , 'principalOutstanding': this.toFixedNumber(outstandingPrincipal, 2)
+                , 'additionalPrincipal': this.toFixedNumber(additionalPrincipal, 2) 
                 , 'interestRunningTotal': this.toFixedNumber(interestRunningTotal, 2)});
 
             //Protection Against Infinite Loop

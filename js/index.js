@@ -4,6 +4,7 @@ const intertestRateField = document.getElementById("interestRateInput");
 const startDateField = document.getElementById("startDateInput");
 const radioTerm15 = document.getElementById("radioTerm15")
 const radioTerm30 = document.getElementById("radioTerm30")
+const additionalPrincipalField = document.getElementById("additionalPrincipalAmountInput");
 const annualTaxesField = document.getElementById("taxesInput");
 const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");
@@ -108,6 +109,7 @@ function getMortgageObject() {
             //principalAmountField.value = myMortgageReq.principalDollars;
             myMortgage.principalDollars = myMortgageReq.principalDollars;
             myMortgage.interestRate = myMortgageReq.interestRate;
+            myMortgage.additionalPrincipal = myMortgageReq.additionalPrincipal ? myMortgageReq.additionalPrincipal : 0;
             //intertestRateField.value = `3.25`;
             //startDateField.valueAsDate = new Date();
             //annualTaxesField.value = myMortgage.;
@@ -140,14 +142,17 @@ document.addEventListener('DOMContentLoaded', function(){
             //principalAmountField.value = myMortgageReq.principalDollars;
             myMortgage.principalDollars = myMortgageReq.principalDollars;
             myMortgage.interestRate = myMortgageReq.interestRate;
+            myMortgage.additionalPrincipal = myMortgageReq.additionalPrincipal ? myMortgageReq.additionalPrincipal : 0;
             //intertestRateField.value = `3.25`;
             //startDateField.valueAsDate = new Date();
             //annualTaxesField.value = myMortgage.;
 
             console.log(myMortgage);
             console.log(myMortgage.principalDollars);
+            console.log(myMortgage.additionalPrincipal);
             principalAmountField.value = `${myMortgage.principalDollars}`;
             intertestRateField.value = myMortgage.interestRate; //`3.25`;
+            additionalPrincipalField.value = myMortgage.additionalPrincipal;
             startDateField.valueAsDate = new Date();
             annualTaxesField.value = `5000.00`;
 
@@ -225,6 +230,7 @@ function populateMortgageDetail() {
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     let htmlInnerText = ''; //= '<tbody>';
     let amortSchedJSON = myMortgage.calculateMortgageDetail();
+    console.log(amortSchedJSON);
     for (let payment in amortSchedJSON) {
         //work to add these to final list of rows of html to be returned.
         
