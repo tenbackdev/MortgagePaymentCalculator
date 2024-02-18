@@ -141,6 +141,7 @@ const intertestRateField = document.getElementById("interestRateInput");
 const startDateField = document.getElementById("startDateInput");
 const radioTerm15 = document.getElementById("radioTerm15")
 const radioTerm30 = document.getElementById("radioTerm30")
+const principalAmountField = document.getElementById("principalAmountInput");
 const annualTaxesField = document.getElementById("taxesInput");
 const buttonCalc = document.getElementById("calculateButton");
 const summaryTotalPayment = document.querySelector("#summaryTotalPayment p");

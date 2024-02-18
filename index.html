@@ -13,7 +13,7 @@
         <div id="inputsContainer">
             <fieldset class="section" id="inputs">
                 <legend>Parameters</legend>
-                <!--Interest Rate-->
+                <!--Principal Amount-->
                 <div class="inputCard" id="cardPrincipalAmount">
                     <label for="principalAmountInput" class="inputLabel">Loan Amount: 
                         <input type="number" name="principalAmount" min="0" step="0.01" id="principalAmountInput">
@@ -39,6 +39,12 @@
                         <label for="term30Input">30</label>
                         <input type="radio" name="termInput" id="radioTerm30" value="360">
                     </p>
+                </div>
+                <!--Additional Principal-->
+                <div class="inputCard" id="cardAdditionalPrincipalAmount">
+                    <label for="additionalPrincipalAmountInput" class="inputLabel">Additional Principal: 
+                        <input type="number" name="additionalPrincipalAmount" min="0" step="0.01" id="additionalPrincipalAmountInput">
+                    </label>
                 </div>
                 <!--Taxes-->
                 <div class="inputCard" id="inputTaxes">
