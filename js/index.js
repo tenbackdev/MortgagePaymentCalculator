@@ -101,7 +101,7 @@ function getMortgageObject() {
         db = event.target.result;
         //console.log(db);
         //hardcoded values that can be replaced later
-        const req = db.transaction('mortgage').objectStore('mortgage').get(63);
+        const req = db.transaction('mortgage').objectStore('mortgage').get(123);
 
         req.onsuccess = () => {
             const myMortgageReq = req.result;
@@ -128,28 +128,36 @@ document.addEventListener('DOMContentLoaded', function(){
     let db;
     const openDB = indexedDB.open('mortgageDB', 6);
     //let myObj;
+
+    myMortgage.principalDollars = parseFloat(principalAmountField.value);
+    myMortgage.interestRate = parseFloat(intertestRateField.value);
+    myMortgage.additionalPrincipal = parseFloat(additionalPrincipalField.value);
+
     openDB.onsuccess = (event) => {
         //console.log(openDB.result);
         //console.log(event.target.result);
         db = event.target.result;
         //console.log(db);
         //hardcoded values that can be replaced later
-        const req = db.transaction('mortgage').objectStore('mortgage').get(63);
+        //below logic in req.onsuccess errors out if this comes back negative.
+        let req = db.transaction('mortgage').objectStore('mortgage').get(133);
+
+        //req = req ? req : myMortgage;
 
         req.onsuccess = () => {
             const myMortgageReq = req.result;
             //console.log(myMortgageReq.principalDollars)
             //principalAmountField.value = myMortgageReq.principalDollars;
-            myMortgage.principalDollars = myMortgageReq.principalDollars;
+            myMortgage.principalDollars = myMortgageReq.principalDollars ? myMortgageReq.principalDollars : myMortgage.principalDollars;
             myMortgage.interestRate = myMortgageReq.interestRate;
             myMortgage.additionalPrincipal = myMortgageReq.additionalPrincipal ? myMortgageReq.additionalPrincipal : 0;
             //intertestRateField.value = `3.25`;
             //startDateField.valueAsDate = new Date();
             //annualTaxesField.value = myMortgage.;
 
-            console.log(myMortgage);
-            console.log(myMortgage.principalDollars);
-            console.log(myMortgage.additionalPrincipal);
+            //console.log(myMortgage);
+            //console.log(myMortgage.principalDollars);
+            //console.log(myMortgage.additionalPrincipal);
             principalAmountField.value = `${myMortgage.principalDollars}`;
             intertestRateField.value = myMortgage.interestRate; //`3.25`;
             additionalPrincipalField.value = myMortgage.additionalPrincipal;
@@ -173,9 +181,7 @@ document.addEventListener('DOMContentLoaded', function(){
     //look to replace this - probably shouldn't have hardcoded values in the script.
     
 
-    myMortgage.principalDollars = parseFloat(principalAmountField.value);
-    myMortgage.interestRate = parseFloat(intertestRateField.value);
-    myMortgage.additionalPrincipal = parseFloat(additionalPrincipalField.value);
+    
 
     //default to 30 year term
     //force the change to trigger the listener
@@ -236,7 +242,7 @@ function populateMortgageDetail() {
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     let htmlInnerText = ''; //= '<tbody>';
     let amortSchedJSON = myMortgage.calculateMortgageDetail();
-    console.log(amortSchedJSON);
+    //console.log(amortSchedJSON);
     for (let payment in amortSchedJSON) {
         //work to add these to final list of rows of html to be returned.
         

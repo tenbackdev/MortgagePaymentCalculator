@@ -1,8 +1,8 @@
 class Mortgage {
     constructor(principalDollars, interestRate, loanTerm, additionalPrincipal) {
-        this.principalDollars = principalDollars;
-        this.interestRate = interestRate;
-        this.loanTerm = loanTerm;
+        this.principalDollars = principalDollars ? principalDollars : 250000;
+        this.interestRate = interestRate ? interestRate : 4.25;
+        this.loanTerm = loanTerm ? loanTerm : 30;
         this.additionalPrincipal = additionalPrincipal ? additionalPrincipal : 0;
     }
 
