@@ -79,51 +79,6 @@ function openDB(objectStoreName, objectId) {
     );
 }
 
-//let db;
-
-//function createDB() {
-//    const req = indexedDB.open('mortgageDB', 6);
-//    req.onsuccess = (event) => {
-//        db = req.result;
-//    };
-//}
-
-//const transaction = db.transaction('mortgage', 'readonly');
-//console.log(transaction);
-
-function getMortgageObject() {
-    let db;
-    const openDB = indexedDB.open('mortgageDB', 6);
-    let myObj;
-    openDB.onsuccess = (event) => {
-        //console.log(openDB.result);
-        //console.log(event.target.result);
-        db = event.target.result;
-        //console.log(db);
-        //hardcoded values that can be replaced later
-        const req = db.transaction('mortgage').objectStore('mortgage').get(123);
-
-        req.onsuccess = () => {
-            const myMortgageReq = req.result;
-            //console.log(myMortgageReq.principalDollars)
-            //principalAmountField.value = myMortgageReq.principalDollars;
-            myMortgage.principalDollars = myMortgageReq.principalDollars;
-            myMortgage.interestRate = myMortgageReq.interestRate;
-            myMortgage.additionalPrincipal = myMortgageReq.additionalPrincipal ? myMortgageReq.additionalPrincipal : 0;
-            //intertestRateField.value = `3.25`;
-            //startDateField.valueAsDate = new Date();
-            //annualTaxesField.value = myMortgage.;
-
-            //console.log(myMortgage);
-            //myObj = myMortgage;
-        }
-        
-        req.onerror = (error) => {
-            console.error("Error:", error);
-        }
-    };    
-}
-
 document.addEventListener('DOMContentLoaded', function(){
     let db;
     const openDB = indexedDB.open('mortgageDB', 6);
@@ -220,9 +175,14 @@ function radioTermChange() {
 }
 
 function calculateMortgage() {
-    myMortgage.principalDollars = parseFloat(principalAmountField.value);
-    myMortgage.interestRate = parseFloat(intertestRateField.value);
-    //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
+    calcMortgage = new Mortgage(
+        parseFloat(principalAmountField.value)
+        , parseFloat(intertestRateField.value)
+        , radioTerm30.checked ? 30 : 15
+        , parseFloat(additionalPrincipalField.value)
+    )
+    console.log(calcMortgage);
+    summaryTotalPayment.innerText = `\$${calcMortgage.calculateMinimumPrincipalAndInterest()}`;
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     //let pni = myMortgage.getPrincipalAndInterestSplit();
     //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
@@ -233,7 +193,7 @@ function calculateMortgage() {
     tablePaymentDetailsBody.innerHTML = "";
     tablePaymentDetailsBody.innerHTML = populateMortgageDetail();
     //console.log('NO WAY');
-    saveOrUpdateObjectToIndexedDB(myMortgage, 'mortgageDB');
+    saveOrUpdateObjectToIndexedDB(calcMortgage, 'mortgageDB');
     //console.log('ME TOO');
 }
 
