@@ -182,7 +182,7 @@ function calculateMortgage() {
         , parseFloat(additionalPrincipalField.value)
     )
     console.log(calcMortgage);
-    summaryTotalPayment.innerText = `\$${calcMortgage.calculateMinimumPrincipalAndInterest()}`;
+    //summaryTotalPayment.innerText = `\$${calcMortgage.calculateMinimumPrincipalAndInterest()}`;
     //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
     //let pni = myMortgage.getPrincipalAndInterestSplit();
     //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
@@ -190,19 +190,22 @@ function calculateMortgage() {
     //console.log(myMortgage.calculateMortageDetail());
     //console.log(tablePaymentDetails);
     //console.log(myMortgage);
+    console.log(calcMortgage);
     tablePaymentDetailsBody.innerHTML = "";
-    tablePaymentDetailsBody.innerHTML = populateMortgageDetail();
+    tablePaymentDetailsBody.innerHTML = populateMortgageDetail(calcMortgage);
     //console.log('NO WAY');
     saveOrUpdateObjectToIndexedDB(calcMortgage, 'mortgageDB');
     //console.log('ME TOO');
 }
 
-function populateMortgageDetail() {
-    //summaryTotalPayment.innerText = `\$${myMortgage.getPrincipalAndInterest()}`;
-    //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
+function populateMortgageDetail(dtlMortgage) {
+    
     let htmlInnerText = ''; //= '<tbody>';
-    let amortSchedJSON = myMortgage.calculateMortgageDetail();
-    //console.log(amortSchedJSON);
+    let amortSchedJSON = dtlMortgage.calculateMortgageDetail();
+    console.log(amortSchedJSON.at(-1));
+    summaryTotalPayment.innerText = `\$${amortSchedJSON[0]['principalInterest']}`;
+    summaryPrincipalInterest.innerText = `\$${amortSchedJSON[0]['principal']} / \$${amortSchedJSON[0]['interest']}`
+    summaryTotalInterest.innerText = `${formatDollarsAndCents(amortSchedJSON.at(-1)['interestRunningTotal'])}`;
     for (let payment in amortSchedJSON) {
         //work to add these to final list of rows of html to be returned.
         
