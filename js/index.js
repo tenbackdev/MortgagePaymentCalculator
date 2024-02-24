@@ -106,13 +106,6 @@ document.addEventListener('DOMContentLoaded', function(){
             myMortgage.principalDollars = myMortgageReq.principalDollars ? myMortgageReq.principalDollars : myMortgage.principalDollars;
             myMortgage.interestRate = myMortgageReq.interestRate;
             myMortgage.additionalPrincipal = myMortgageReq.additionalPrincipal ? myMortgageReq.additionalPrincipal : 0;
-            //intertestRateField.value = `3.25`;
-            //startDateField.valueAsDate = new Date();
-            //annualTaxesField.value = myMortgage.;
-
-            //console.log(myMortgage);
-            //console.log(myMortgage.principalDollars);
-            //console.log(myMortgage.additionalPrincipal);
             principalAmountField.value = `${myMortgage.principalDollars}`;
             intertestRateField.value = myMortgage.interestRate; //`3.25`;
             additionalPrincipalField.value = myMortgage.additionalPrincipal;
@@ -127,16 +120,6 @@ document.addEventListener('DOMContentLoaded', function(){
             console.error("Error:", error);
         }
     }; 
-    //const myInitMortgage = resolve(openDB('mortgage', 1));
-    //console.log(resolve(myInitMortgage));
-
-    //console.log(getMortgageObject());
-
-    //set defaults
-    //look to replace this - probably shouldn't have hardcoded values in the script.
-    
-
-    
 
     //default to 30 year term
     //force the change to trigger the listener
@@ -150,10 +133,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //console.log(myMortgage);
 })
-
-
-//Establish Mortgage
-//console.log(myMortgage);
 
 ////Adding Callbacks
 //intertestRateField.addEventListener('change', changeInterestRate)
@@ -181,21 +160,9 @@ function calculateMortgage() {
         , radioTerm30.checked ? 30 : 15
         , parseFloat(additionalPrincipalField.value)
     )
-    console.log(calcMortgage);
-    //summaryTotalPayment.innerText = `\$${calcMortgage.calculateMinimumPrincipalAndInterest()}`;
-    //summaryTotalInterest.innerText = `${myMortgage.formatDollarsAndCents(myMortgage.getTotalInterest())}`;
-    //let pni = myMortgage.getPrincipalAndInterestSplit();
-    //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
-    //console.log(myMortgage.getPrincipalAndInterestSplit());
-    //console.log(myMortgage.calculateMortageDetail());
-    //console.log(tablePaymentDetails);
-    //console.log(myMortgage);
-    console.log(calcMortgage);
     tablePaymentDetailsBody.innerHTML = "";
     tablePaymentDetailsBody.innerHTML = populateMortgageDetail(calcMortgage);
-    //console.log('NO WAY');
     saveOrUpdateObjectToIndexedDB(calcMortgage, 'mortgageDB');
-    //console.log('ME TOO');
 }
 
 function populateMortgageDetail(dtlMortgage) {
@@ -208,10 +175,10 @@ function populateMortgageDetail(dtlMortgage) {
     summaryTotalInterest.innerText = `${formatDollarsAndCents(amortSchedJSON.at(-1)['interestRunningTotal'])}`;
     for (let payment in amortSchedJSON) {
         //work to add these to final list of rows of html to be returned.
-        
+    
         htmlInnerText += `<tr>
             <td>${amortSchedJSON[payment].paymentNumber}</td>
-            <td>${formatDollarsAndCents(amortSchedJSON[payment].principalInterest)}</td>
+            <td>${formatDollarsAndCents(amortSchedJSON[payment].totalPayment)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].principal)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].interest)}</td>
             <td>${formatDollarsAndCents(amortSchedJSON[payment].additionalPrincipal)}</td>
@@ -220,13 +187,7 @@ function populateMortgageDetail(dtlMortgage) {
         </tr>`;
 
     };
-    //add closing tbody tag at end
-    //htmlInnerText += '</tbody>'
+
     return htmlInnerText;
-    //summaryPrincipalInterest.innerText = `\$${pni[0]} / \$${pni[1]}`
-    //console.log(myMortgage.getPrincipalAndInterestSplit());
-    //console.log(myMortgage.calculateMortageDetail());
-    //console.log(tablePaymentDetails);
-    //tablePaymentDetails.innerHTML += myMortgage.calculateMortageDetail();
 }
 

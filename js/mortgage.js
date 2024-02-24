@@ -57,6 +57,7 @@ class Mortgage {
             outstandingPrincipal = this.toFixedNumber(outstandingPrincipal - curPrincipalTotal, 2);
 
             amortArray.push({'paymentNumber': monthNumber
+                , 'totalPayment': this.toFixedNumber(curPrincipalInterest + additionalPrincipal, 2)
                 , 'principalInterest': curPrincipalInterest
                 , 'principal': curPrincipal
                 , 'interest': curInterest
