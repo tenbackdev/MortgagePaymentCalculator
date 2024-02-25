@@ -13,7 +13,6 @@ const summaryTotalInterest = document.querySelector("#summaryTotalInterest p");
 const tablePaymentDetailsBody = document.getElementById('tablePaymentDetailsBody');
 
 let myMortgage = new Mortgage(principalAmountField.value, intertestRateField.value, radioTerm30.checked ? 30 : 15);
-//console.log(myMortgage);
 
 function formatDollarsAndCents(myNumber) {
     return myNumber.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
@@ -39,9 +38,7 @@ function saveOrUpdateObjectToIndexedDB(objectToSave, objectStoreName) {
 
     request.onsuccess = function(event) {
         const db = event.target.result;
-        //console.log(db);
         const transaction = db.transaction(['mortgage'], "readwrite");
-        //console.log(db);
         const objectStore = transaction.objectStore("mortgage");
 
         const getRequest = objectStore.put(objectToSave);
@@ -66,7 +63,6 @@ function openDB(objectStoreName, objectId) {
             request.onsuccess = function (event) {
                 const db = event.target.result;
                 const myObj = db.transaction([objectStoreName], 'readwrite').objectStore(objectStoreName).get(objectId);
-                //console.log(myObj);
                 myObj.onsuccess = function(event) {
                     resolve(event.target.result);
                 }
@@ -82,27 +78,17 @@ function openDB(objectStoreName, objectId) {
 document.addEventListener('DOMContentLoaded', function(){
     let db;
     const openDB = indexedDB.open('mortgageDB', 6);
-    //let myObj;
 
     myMortgage.principalDollars = parseFloat(principalAmountField.value);
     myMortgage.interestRate = parseFloat(intertestRateField.value);
     myMortgage.additionalPrincipal = parseFloat(additionalPrincipalField.value);
 
     openDB.onsuccess = (event) => {
-        //console.log(openDB.result);
-        //console.log(event.target.result);
         db = event.target.result;
-        //console.log(db);
-        //hardcoded values that can be replaced later
-        //below logic in req.onsuccess errors out if this comes back negative.
         let req = db.transaction('mortgage').objectStore('mortgage').get(133);
-
-        //req = req ? req : myMortgage;
 
         req.onsuccess = () => {
             const myMortgageReq = req.result;
-            //console.log(myMortgageReq.principalDollars)
-            //principalAmountField.value = myMortgageReq.principalDollars;
             myMortgage.principalDollars = myMortgageReq.principalDollars ? myMortgageReq.principalDollars : myMortgage.principalDollars;
             myMortgage.interestRate = myMortgageReq.interestRate;
             myMortgage.additionalPrincipal = myMortgageReq.additionalPrincipal ? myMortgageReq.additionalPrincipal : 0;
@@ -111,9 +97,6 @@ document.addEventListener('DOMContentLoaded', function(){
             additionalPrincipalField.value = myMortgage.additionalPrincipal;
             startDateField.valueAsDate = new Date();
             annualTaxesField.value = `5000.00`;
-
-            //console.log(myMortgage);
-            //myObj = myMortgage;
         }
         
         req.onerror = (error) => {
@@ -130,8 +113,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     event = new Event('click')
     buttonCalc.dispatchEvent(event);
-
-    //console.log(myMortgage);
 })
 
 ////Adding Callbacks
@@ -167,9 +148,8 @@ function calculateMortgage() {
 
 function populateMortgageDetail(dtlMortgage) {
     
-    let htmlInnerText = ''; //= '<tbody>';
+    let htmlInnerText = '';
     let amortSchedJSON = dtlMortgage.calculateMortgageDetail();
-    console.log(amortSchedJSON.at(-1));
     summaryTotalPayment.innerText = `\$${amortSchedJSON[0]['principalInterest']}`;
     summaryPrincipalInterest.innerText = `\$${amortSchedJSON[0]['principal']} / \$${amortSchedJSON[0]['interest']}`
     summaryTotalInterest.innerText = `${formatDollarsAndCents(amortSchedJSON.at(-1)['interestRunningTotal'])}`;

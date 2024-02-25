@@ -50,7 +50,7 @@ class Mortgage {
             } else {
                 curPrincipal = this.toFixedNumber(outstandingPrincipal, 2);
                 curPrincipalInterest = this.toFixedNumber(outstandingPrincipal + curInterest, 2);
-                curPrincipalTotal = curPrincipalInterest;
+                curPrincipalTotal = this.toFixedNumber(outstandingPrincipal, 2);
             }
 
             interestRunningTotal += curInterest;
